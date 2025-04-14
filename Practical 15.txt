@@ -1,0 +1,58 @@
+Practical 15
+CREATING APP BAR WITH BUTTONS
+In res/values/colors.xml
+Add a new color “appbarcolor”
+
+<color name="appbarcolor">#50F722</color>
+
+In the res/values/styles.xml file , change the app theme to NoActionBar
+
+<style name=”AppTheme” parent=”Theme.AppCompat.Light.NoActionBar”>
+
+Now drag the ToolBar widget in the layout. Set ID: custtoolbar and set its
+background property to @color/appbarcolor
+Add a textview and two Buttons to the toolbar and place at proper locations
+
+<android.support.v7.widget.Toolbar
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:background="@color/appbarcolor"
+ android:theme="?attr/actionBarTheme"
+android:minHeight="?attr/actionBarSize"
+android:id="@+id/custtoolbar"/>
+<TextView
+ android:text="AppBar"
+ android:layout_width="144dp"
+ android:layout_height="49dp"
+android:id="@+id/textView"/>
+<Button
+ android:text="Search"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+android:id="@+id/btnSearch"
+tools:layout_editor_absoluteY="0dp"
+ tools:layout_editor_absoluteX="180dp"
+android:layout_alignParentRight="true"
+ android:layout_alignParentEnd="true"
+android:layout_alignParentTop="true"
+android:layout_marginEnd="134dp"
+ android:layout_marginRight="134dp"/>
+<Button
+ android:text="File"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+android:id="@+id/btnFile"
+android:layout_alignParentRight="true"
+ android:layout_alignBottom="@+id/textView"
+android:layout_alignParentEnd="true"
+ android:layout_marginEnd="23dp"
+android:layout_marginRight="23dp"/>
+In MainActivity, in OnClick() method add the following code:-
+btnSearch.setOnClickListener(){
+ Toast.makeText(this,"You clicked on Search
+Button",Toast.LENGTH_SHORT).show()
+}
+btnFile.setOnClickListener(){
+ Toast.makeText(this,"You clicked on File
+Button",Toast.LENGTH_SHORT).show()
+}

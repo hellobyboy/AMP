@@ -1,0 +1,224 @@
+Practical 7
+Activity_main.xml
+Change the Layout to LinearLayout. Set its property
+Orientation: vertical
+Add a TextView and set its property
+textSize: 20sp
+text: SQLite Tutorial- User Management
+Add another LinearLayout(vertical)
+Add three EditTexts (Plain Text) to this layout and set their properties:-
+1) ID: edtUserId
+Hint: User ID
+2) ID: edtName
+Hint: User Name
+3) ID: edtEmailid
+Hint: Email ID
+Add another LinearLayout(horizontal)
+Add four Buttons to this layout and set their properties as:-
+1) ID: btnAddUser
+Text: Add
+onClick: addUser
+2) ID: btnDeleteUser
+Text: Delete
+onClick: deleteUser
+3) ID: btnUpdateUser
+Text: Update
+onClick: updateUser
+4) ID: btnShowAll
+Text: Show All
+onClick: showAllUsers
+Now add a TextView under the main LinearLayout (vertical) and set its property
+ID: txtResult
+
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:orientation="vertical"
+ android:gravity="center"
+ tools:context="com.example.rafatkhan.typract8.MainActivity">
+ <TextView android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:text="SQLite Tutorial - User Management"
+ android:textSize="20dp" android:padding="10dp" />
+ <LinearLayout android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+android:orientation="vertical">
+ <EditText android:id="@+id/edtUserId"
+ android:hint="User ID"
+android:gravity="center"
+android:layout_width="match_parent"
+android:layout_height="wrap_content" />
+ <EditText android:id="@+id/edtName"
+ android:hint="User Name"
+android:gravity="center"
+ android:layout_width="match_parent"
+android:layout_height="wrap_content" />
+ <EditText android:id="@+id/edtEmailid"
+ android:hint="Email ID"
+android:gravity="center"
+android:layout_width="match_parent"
+android:layout_height="wrap_content" />
+ </LinearLayout>
+<LinearLayout android:layout_width="match_parent"
+ android:layout_height="wrap_content"
+ android:orientation="horizontal">
+ <Button android:id="@+id/btnAddUser"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_weight="1"
+ android:onClick="addUser"
+ android:text="Add" />
+ <Button android:id="@+id/btnDeleteUser"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_weight="1"
+ android:onClick="deleteUser"
+ android:text="Delete" />
+ <Button android:id="@+id/btnUpdateUser"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_weight="1"
+ android:onClick="updateUser"
+ android:text="Update" />
+ <Button android:id="@+id/btnShowAll"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:layout_weight="1"
+ android:onClick="showAllUsers"
+ android:text="Show All" />
+ </LinearLayout>
+ <TextView android:id="@+id/txtResult"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content" />
+</LinearLayout>
+
+
+DBHelper Class
+Right click on app/java folder and select New-> Kotlin File/Class
+Name: DBHelper
+Kind: Class
+Click OK
+Extend class DBHelper with SQLiteOpenHelper Class
+Click on red bulb and select the constructor with four parameters Context, String, Cursorfactory
+and Int.
+Change the values to SQLiteOpenHelper(context, DATABASE_NAME, null, 1) 
+
+Now right click inside the class and select Generate-> Override Methods or Click Ctrl+O.
+Now select the methods onCreate and onUpgrade (Using Ctrl) and click OK. Comment ToDo
+lines in both.
+Also add your own new functions insertData, updateData, deleteData and get() with appropriate
+parameters and return type as required
+
+
+package com.example.rafatkhan.typract8
+import android.content.ContentValues
+import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
+class DBHelper (context: Context) :
+ SQLiteOpenHelper(context, DATABASE_NAME, null, 1)
+{
+ companion object {
+ val DATABASE_NAME="USER.DB"
+ val TABLE_NAME="USERS"
+ val COL_0="USERID"
+ val COL_1="USERNAME"
+ val COL_2="EMAILID"
+ }
+ override fun onCreate(db: SQLiteDatabase) {
+ db.execSQL("CREATE TABLE $TABLE_NAME( USERID TEXT PRIMARY KEY , USERNAME
+TEXT, EMAILID TEXT)" )
+ }
+ override fun onUpgrade(db: SQLiteDatabase, p1: Int, p2: Int) {
+ db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME)
+ onCreate(db)
+ }
+ fun insertData (id: String, name: String, emailid: String ){
+ val db=this.writableDatabase
+ val contentValues= ContentValues()
+ contentValues.put(COL_0,id)
+ contentValues.put(COL_1,name)
+ contentValues.put(COL_2,emailid)
+ db.insert(TABLE_NAME,null,contentValues)
+ }
+ fun updateData(id : String, name: String, emailid: String){
+ val db=this.writableDatabase
+ val contentValues= ContentValues()
+ contentValues.put(COL_0,id)
+ contentValues.put(COL_1,name)
+ contentValues.put(COL_2,emailid)
+ db.update(TABLE_NAME,contentValues,"USERID = ?", arrayOf(id))
+ }
+fun deleteData(id: String) {
+ val db=this.writableDatabase
+ db.delete(TABLE_NAME, "USERID=?", arrayOf(id))
+ }
+ val allData: Cursor
+ get(){
+ val db=this.writableDatabase
+ val res=db.rawQuery("SELECT * FROM " + TABLE_NAME,null)
+ return res
+ }
+}
+
+MainActivity.kt
+Create an object of DBHelper class. Create functions addUser, deleteUser, updateUser and
+showAllUsers
+package com.example.rafatkhan.typract8
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.view.View
+import kotlinx.android.synthetic.main.activity_main.*
+class MainActivity : AppCompatActivity() {
+ var dbHelper = DBHelper(this)
+ override fun onCreate(savedInstanceState: Bundle?) {
+ super.onCreate(savedInstanceState)
+ setContentView(R.layout.activity_main)
+ btnAddUser.setOnClickListener(){
+ var userid = edtUserId.text.toString()
+ var name = this.edtName.text.toString()
+ var emailid = this.edtEmailid.text.toString()
+ dbHelper.insertData(userid,name, emailid)
+ this.edtEmailid.setText("")
+ this.edtName.setText("")
+ this.edtUserId.setText("")
+ this.txtResult.text = "Added user "
+ }
+ btnUpdateUser.setOnClickListener(){
+ var userid = this.edtUserId.text.toString()
+ var name = this.edtName.text.toString()
+ var emailid = this.edtEmailid.text.toString()
+ dbHelper.updateData(userid,name,emailid)
+ this.txtResult.text = "Updated user "
+ }
+btnDeleteUser.setOnClickListener(){
+ var userid = this.edtUserId.text.toString()
+ dbHelper.deleteData(userid)
+ this.txtResult.text = "Deleted user "
+ }
+ btnShowAll.setOnClickListener(){
+ val res = dbHelper.allData
+ val buffer = StringBuffer()
+ if (res.count == 0) {
+ txtResult.text = "No Data Found"
+ }
+ else
+ {
+ while (res.moveToNext()) {
+ buffer.append("ID : " + res.getString(0) + "\n")
+ buffer.append("Name : " + res.getString(1) + "\n")
+ buffer.append("Email ID : " + res.getString(2) + "\n")
+ }
+ txtResult.text = buffer.toString()
+ }
+ }
+}
+}
+
+
+

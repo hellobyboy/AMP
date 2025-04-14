@@ -1,0 +1,11 @@
+Practical 11
+
+PASSING DATA FROM ONE ACTIVITY TO ANOTHER
+Create an android application to pass the data from current application to another application using
+intent.
+Practical 6 , using intent.putExtra
+
+
+Example:-
+ var intent = Intent(applicationContext, MainScreen::class.java)
+ intent.putExtra("key",lo

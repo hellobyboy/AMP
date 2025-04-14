@@ -1,0 +1,25 @@
+Practical 12
+PLAYING A MUSIC FILE
+Create the background service android application to play the ringtone/music
+Create a new folder under res folder
+Right on app-> new-> Android Resource Folder
+Directory Name: raw
+Resource Type: raw
+Click OK
+COPY A SOUND FILE in this folder
+Now add a Button in the activity and set its ID: btnPlay
+Inside MainActivity create this variable
+
+lateinit var mediaPlayer: MediaPlayer
+
+Now add the following code in the onCreate() method of MainActivity
+
+val btnPlay= findViewById<Button>(R.id.btnPlay)
+val btnStop= findViewById<Button>(R.id.btnStop)
+btnPlay.setOnClickListener(View.OnClickListener {
+ mediaPlayer = MediaPlayer.create(this, R.raw.music)
+ mediaPlayer?.start()
+})
+btnStop.setOnClickListener(View.OnClickListener {
+ mediaPlayer?.stop()
+})

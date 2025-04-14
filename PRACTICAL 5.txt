@@ -1,0 +1,347 @@
+PRACTICAL 5
+Create a new project and name it as typract5. Set its API Level to 15
+Right click on app -> new -> Fragment -> Fragment(Blank)
+Fragment Name: MyFragment
+Go to fragment_my.xml, remove TextView. Change FrameLayout to LinearLayout(Vertical),
+add Radiogroup and set its property
+ID: rgpShare
+Add three radiobuttons under the radiogroup and set the following properties
+1) ID: radWhatsApp
+Text: WhatsApp
+2) ID: radInsta
+Text: Instagram
+3) ID: radGmail
+Text: Gmail
+Now add a Button in LinearLayout below the Radiogroup and set the following properties
+ID: btnShare
+Text: Share
+
+
+fragment_share.xml
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:tools="http://schemas.android.com/tools"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ android:orientation="vertical"
+ tools:context=".MyFragment">
+ <RadioGroup
+ android:layout_width="271dp"
+ android:layout_height="425dp" android:id="@+id/rgpShare">
+ <RadioButton
+ android:text="WhatsApp"
+ android:layout_width="288dp"
+ android:layout_height="wrap_content" android:id="@+id/radWhatsApp"
+android:layout_weight="1"/>
+ <RadioButton
+ android:text="GMail"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content" android:id="@+id/radGmail"
+android:layout_weight="1"/>
+ <RadioButton
+ android:text="Instagram"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content" android:id="@+id/radInsta"
+android:layout_weight="1"/>
+ </RadioGroup>
+ <Button
+ android:text="Share"
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content" android:id="@+id/btnShare"/>
+</LinearLayout>
+
+
+Create a Menu
+Right click on app-> New-> Android Resource File
+File Name: menufile
+Resource Type: menu
+Click OK
+Add three <item> elements to the <menu> and set their Title and ID properties as shown below
+1. Id:- mnuBookmarks title:- Bookmarks
+2. Id- mnuShare title- Share
+3. Id- mnuDownload title- Download
+4. Id- mnuSave title- Save
+5. Id- mnuContactUs title- Contact Us
+6. Id- mnuExit title- Exit
+
+menufile.xml
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+ <item android:title="Bookmarks" android:id="@+id/mnuBookmarks"/>
+ <item android:title="Share" android:id="@+id/mnuShare"/>
+ <item android:title="Download" android:id="@+id/mnuDownload"/>
+ <item android:title="Save" android:id="@+id/mnuSave"/>
+ <item android:title="Contact Us" android:id="@+id/mnuContactUs"/>
+ <item android:title="Exit" android:id="@+id/mnuExit"/>
+</menu>
+
+
+Activity_main.xml
+Change the Layout to LinearLayout and set its orientation to vertical
+Add a Button
+ID: btnDate
+Text: Click here to select Date
+Add a TextView
+ID: txtDate
+Text: <Blank>
+Add a Button
+ID: btnTime
+Text: Click here to select Time
+Add a TextView
+ID: txtTime
+Text: <Blank>
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+ xmlns:android="http://schemas.android.com/apk/res/android"
+ xmlns:tools="http://schemas.android.com/tools"
+ xmlns:app="http://schemas.android.com/apk/res-auto"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent"
+ android:orientation="vertical"
+ tools:context=".MainActivity">
+ <Button
+ android:text="Set Date"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content" android:id="@+id/btnDate"/>
+ <TextView
+ android:layout_width="wrap_content"
+ android:layout_height="wrap_content"
+ app:layout_constraintBottom_toBottomOf="parent"
+ app:layout_constraintLeft_toLeftOf="parent"
+ app:layout_constraintRight_toRightOf="parent"
+ app:layout_constraintTop_toTopOf="parent" android:id="@+id/txtDate"/>
+ <Button
+ android:text="Set Time"
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content" android:id="@+id/btnTime"/>
+ <TextView
+ android:layout_width="match_parent"
+ android:layout_height="wrap_content" android:id="@+id/txtTime"/>
+<FrameLayout
+ android:id="@+id/framelayout"
+ android:layout_width="match_parent"
+ android:layout_height="match_parent">
+</FrameLayout>
+</LinearLayout>
+
+
+MainActivity.kt
+
+
+package com.example.typract5
+import android.support.v7.app.AppCompatActivity
+import android.os.Bundle
+import android.support.v7.app.AlertDialog
+import android.view.Menu
+import android.view.MenuItem
+import android.view.View
+import android.widget.DatePicker
+import android.widget.Toast
+import kotlinx.android.synthetic.main.activity_main.*
+import javax.xml.datatype.DatatypeConstants.MONTHS
+import android.app.DatePickerDialog
+import android.app.TimePickerDialog
+import java.text.SimpleDateFormat
+import java.util.*
+class MainActivity : AppCompatActivity() {
+ override fun onCreate(savedInstanceState: Bundle?) {
+ super.onCreate(savedInstanceState)
+ setContentView(R.layout.activity_main)
+val btnDate=findViewById<Button>(R.id.btnDate)
+val txtDate=findViewById<TextView>(R.id.txtDate)
+ btnDate.setOnClickListener {
+ val cal = Calendar.getInstance()
+ val DateSetListener = DatePickerDialog.OnDateSetListener {
+datePicker, year, monthOfYear, dayOfMonth ->
+ cal.set(Calendar.YEAR, year)
+ cal.set(Calendar.MONTH, monthOfYear)
+ cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+ txtDate.setText(""+ dayOfMonth + " / " +
+monthOfYear + " / " +
+year)
+ }
+ val dpd= DatePickerDialog(this, DateSetListener, cal.get(Calendar.YEAR),
+cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH))
+ dpd.show()
+ }
+val btnTime=findViewById<Button>(R.id.btnTime)
+val txtTime=findViewById<TextView>(R.id.txtTime)
+ btnTime.setOnClickListener {
+ val cal = Calendar.getInstance()
+ val timeSetListener = TimePickerDialog.OnTimeSetListener {
+ timePicker, hour, minute ->
+ cal.set(Calendar.HOUR_OF_DAY, hour)
+ cal.set(Calendar.MINUTE, minute)
+ txtTime.text = SimpleDateFormat("HH:mm").format(cal.time)
+ }
+ val tpd=TimePickerDialog(this, timeSetListener,
+cal.get(Calendar.HOUR_OF_DAY), cal.get(Calendar.MINUTE), true)
+tpd.show()
+ }
+ }
+ override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+ menuInflater.inflate(R.menu.menufile,menu)
+ return super.onCreateOptionsMenu(menu)
+ }
+ override fun onOptionsItemSelected(item: MenuItem): Boolean {
+ var OptionSelected=""
+ when(item.itemId)
+ {
+ R.id.mnuBookmarks -> OptionSelected="Bookmark Selected"
+R.id.mnuShare -> OptionSelected="Share Selected"
+ R.id.mnuContacts -> OptionSelected="Contact Us Selected"
+ R.id.mnuDownloads ->OptionSelected="Download Selected"
+ R.id.mnuSave -> OptionSelected= "Save Selected"
+ R.id.mnuExit -> OptionSelected="Exit Selected"
+ }
+ Toast.makeText(this, "Option " + OptionSelected,
+Toast.LENGTH_SHORT).show()
+ if(OptionSelected=="Share Selected")
+ {
+ val fm=supportFragmentManager
+ var myFragment= MyFragment()
+ fm.beginTransaction()
+ .replace(R.id.framelayout, myFragment)
+ .commit()
+ }
+ if (OptionSelected=="Exit Selected")
+ {
+ ExitSelected()
+ }
+if(OptionSelected=="Download Selected")
+{
+val pd= ProgressDialog(this)
+ pd.setMessage("Downloading Files...")
+ pd.setProgressStyle(ProgressDialog.STYLE_SPINNER)
+ pd.progress=0
+ pd.show()
+}
+ return super.onOptionsItemSelected(item)
+ }
+ fun ExitSelected(){
+ var builder= AlertDialog.Builder(this)
+ builder.setTitle("Exit Application?")
+ builder.setIcon(R.mipmap.ic_launcher)
+ builder.setMessage("Are you sure you want to exit the application?")
+ builder.setNeutralButton("Cancel",{dialogInterface,i ->})
+ builder.setPositiveButton("Yes", {dialogInterface, i-> finish()})
+ builder.setNegativeButton("No", { dialogInterface, i-> Toast.makeText(this,
+"Not Exiting Application", Toast.LENGTH_SHORT).show() })
+ builder.show()
+ }
+}
+
+
+ShareFragment.kt
+
+package com.example.typract5
+import android.content.Context
+import android.net.Uri
+import android.os.Bundle
+import android.support.v4.app.Fragment
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
+import android.widget.RadioButton
+import android.widget.RadioGroup
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
+/**
+* A simple [Fragment] subclass.
+* Activities that contain this fragment must implement the
+* [MyFragment.OnFragmentInteractionListener] interface
+* to handle interaction events.
+* Use the [MyFragment.newInstance] factory method to
+* create an instance of this fragment.
+*
+*/
+class MyFragment : Fragment() {
+ // TODO: Rename and change types of parameters
+ private var param1: String? = null
+ private var param2: String? = null
+ private var listener: OnFragmentInteractionListener? = null
+ override fun onCreate(savedInstanceState: Bundle?) {
+ super.onCreate(savedInstanceState)
+ arguments?.let {
+ param1 = it.getString(ARG_PARAM1)
+ param2 = it.getString(ARG_PARAM2)
+ }
+ }
+ override fun onCreateView(
+ inflater: LayoutInflater, container: ViewGroup?,
+ savedInstanceState: Bundle?
+ ): View? {
+ var rootView: View = inflater.inflate(R.layout.fragment_my, container, false)
+ var rgpShare = rootView.findViewById<RadioGroup>(R.id.rgpShare)
+ var btnShare = rootView.findViewById<Button>(R.id.btnShare)
+ btnShare.setOnClickListener(object : View.OnClickListener {
+ override fun onClick(v: View?) {
+ val selectedId = rgpShare.checkedRadioButtonId
+ var selectedRadioButton = rootView.findViewById<RadioButton>(selectedId)
+ Log.d("Share", "Selected " + selectedRadioButton.text.toString())
+ }
+ // Inflate the layout for this fragment
+})
+ return rootView
+}
+ // TODO: Rename method, update argument and hook method into UI event
+ fun onButtonPressed(uri: Uri) {
+ listener?.onFragmentInteraction(uri)
+ }
+ override fun onAttach(context: Context) {
+ super.onAttach(context)
+ if (context is OnFragmentInteractionListener) {
+ listener = context
+ } else {
+ throw RuntimeException(context.toString() + " must implement
+OnFragmentInteractionListener")
+ }
+ }
+ override fun onDetach() {
+ super.onDetach()
+ listener = null
+ }
+ /**
+ * This interface must be implemented by activities that contain this
+ * fragment to allow an interaction in this fragment to be communicated
+ * to the activity and potentially other fragments contained in that
+ * activity.
+ *
+ *
+ * See the Android Training lesson [Communicating with Other Fragments]
+ * (http://developer.android.com/training/basics/fragments/communicating.html)
+ * for more information.
+ */
+ interface OnFragmentInteractionListener {
+ // TODO: Update argument type and name
+ fun onFragmentInteraction(uri: Uri)
+ }
+ companion object {
+ /**
+ * Use this factory method to create a new instance of
+ * this fragment using the provided parameters.
+ *
+ * @param param1 Parameter 1.
+ * @param param2 Parameter 2.
+ * @return A new instance of fragment MyFragment.
+ */
+ // TODO: Rename and change types and number of parameters
+ @JvmStatic
+ fun newInstance(param1: String, param2: String) =
+ MyFragment().apply {
+ arguments = Bundle().apply {
+ putString(ARG_PARAM1, param1)
+putString(ARG_PARAM2, param2)
+ }
+ }
+ }
+}
+
+
+

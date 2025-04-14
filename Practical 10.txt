@@ -1,0 +1,18 @@
+Practical 10
+Create an android application for the following menu items ,the appropriate toast should appear by
+clicking on the item : • Settings • Search • Compose Email • FeedBack (make Compose Email item
+disabled )
+DISABLING A MENU ITEM
+
+
+Override a method onPrepareOptionsMenu() and type the following code in it
+override fun onPrepareOptionsMenu(menu: Menu?): Boolean {
+ menu?.getItem(2)?.setEnabled(false)
+ return super.onPrepareOptionsMenu(menu)
+}
+
+
+OR
+Select the menuitem from the component tree and uncheck set its enabled property
+2. MAKING A MENU ITEM INVISIBLE OR REMOVING IT
+menu?.getItem(3)?.isVisible=false

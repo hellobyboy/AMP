@@ -1,0 +1,21 @@
+Practical 13
+SHOWING ALERTDIALOG WHEN BACK BUTTON IS PRESSED ASKING WHETHER
+THE USER WANTS TO EXIT APP
+Create an android application to display Alert Dialog on pressing the Back button.
+Override the method onBackPressed() in MainActivity and write the code for
+showing Alert dialog in that remove super.onBackPressed() line
+
+override fun onBackPressed() {
+ val builder= AlertDialog.Builder(this)
+ builder.setTitle("Exit Application")
+ builder.setMessage("Are you sure you want to
+Exit?")
+ builder.setIcon(R.mipmap.ic_launcher)
+ builder.setPositiveButton("Yes", {dialogInterface,
+i -> System.exit(1) })
+ builder.setNegativeButton("No", {dialogInterface,
+i -> })
+ builder.show()
+}
+
+DATABASE APPLICATION TO MANAGE STUDENT DATA / EMPLOYEE DATA

@@ -1,0 +1,33 @@
+Practical 18
+Create an android application, with one button and image view also set the background image in the
+application, the image should be changed on each click of the button (Use two images).
+Change ConstraintLayout to Linearlayout(vertical)
+Set its ID to linearlayout
+Add One Image (ID:imageview) and a Button (ID: btnChangeImage)
+Set srcCompat property of the image to first image (butterfly)
+For LinearLayout set Background property to second image (waterfall)
+
+override fun onCreate(savedInstanceState: Bundle?) {
+ super.onCreate(savedInstanceState)
+ setContentView(R.layout.activity_main)
+ val btnImage=findViewById<Button>(R.id.btnChangeImage)
+ val ll=findViewById<LinearLayout>(R.id.linearlayout)
+ val img=findViewById<ImageView>(R.id.img)
+ var i:Int=0
+ btnImage.setOnClickListener {
+ if (i==0)
+ {
+ //
+img.setImageResource(resources.getDrawable(R.drawable.butterfly))
+ img.setImageResource(R.drawable.butterfly)
+ ll.setBackgroundResource(R.drawable.waterfall)
+ i=1
+ }
+ else if(i==1)
+ {
+ img.setImageResource(R.drawable.waterfall)
+ ll.setBackgroundResource(R.drawable.butterfly)
+ i=0
+ }
+ }
+}
