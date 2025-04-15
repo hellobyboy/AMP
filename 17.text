@@ -1,0 +1,55 @@
+Prac 17
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/selectedGameTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selected Game: "
+        android:textSize="18sp"
+        android:paddingBottom="10dp" />
+
+    <ListView
+        android:id="@+id/gameListView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
+
+package com.example.gamelistapp
+
+import android.os.Bundle
+import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+
+class MainActivity : AppCompatActivity() {
+
+    private lateinit var gameListView: ListView
+    private lateinit var selectedGameTextView: TextView
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
+
+        selectedGameTextView = findViewById(R.id.selectedGameTextView)
+        gameListView = findViewById(R.id.gameListView)
+
+        val games = listOf(
+            "Chess", "Ludo", "Cricket", "Football", "Carrom",
+            "Badminton", "Hockey", "Tennis", "Basketball", "Snakes & Ladders"
+        )
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_list_item_1, games)
+        gameListView.adapter = adapter
+
+        gameListView.setOnItemClickListener { _, _, position, _ ->
+            val selectedGame = games[position]
+            selectedGameTextView.text = "Selected Game: $selectedGame"
+        }
+    }
+}
